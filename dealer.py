@@ -1,5 +1,4 @@
-from player import Player
 
-class Dealer(Player):
+class Dealer:
     def __init__(self):
-        super().__init__()
+        pass
