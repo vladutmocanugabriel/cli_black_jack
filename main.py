@@ -1,27 +1,20 @@
 from card import Card
+from dealer import Dealer
+from game import Game
+from player import Player
+from text import *
 
 def main():
-
-    def print_cards_in_row(*cards):
-        # Split each card representation into lines
-        card_lines = [card.draw_card().split("\n") for card in cards]
-
-        # Print each row by combining corresponding lines of all cards
-        for lines in zip(*card_lines):
-            print("  ".join(lines))  # Join lines with spacing
+   
 
 
-    card_one = Card("spade", "black", "A")
-    card_two = Card("heart", "red", "10")
-    card_three = Card("diamond", "red", "K")
+    while True:
+        player_name = input(f"\n {INPUT_NAME}")
+        player_bank = int(input(f"\{INPUT_MONEY}"))
+        game = Game(player_name, player_bank )
+        print("-----------------------------")
+        print(f"{game.player.name}, {WELCOME}")
 
-    player_one = Card("spade", "black", "A")
-    player_two = Card("heart", "red", "10")
-    player_three = Card("diamond", "red", "K")
-    player_test = Card("diamond", "red", "K")
-
-    print_cards_in_row(card_one, card_two, card_three)
-    print_cards_in_row(player_one, player_two, player_three, player_test)
 
 
 
