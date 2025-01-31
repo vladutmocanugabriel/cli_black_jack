@@ -1,10 +1,28 @@
 from visuals import *
+from text import *
 
 class Card:
     def __init__(self, suit, color, rank):
         self.suit = suit
         self.color = color
         self.rank = rank
+
+
+
+    def get_symbols_value(symbol):
+        if symbol=="K":
+            return 10
+        elif symbol == "J":
+            return 10
+        elif symbol == "Q":
+            return 10
+        elif symbol == "A":
+            choice = input(f"\n{ACE_INFO} (1 or 11)")
+            if choice == "1":
+                return 1
+            elif choice == "11":
+                return 11
+
 
     def draw_card(self, height=0):
         suit_icon = self._get_suit_icon()
