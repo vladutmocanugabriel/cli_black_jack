@@ -18,9 +18,10 @@ def main():
     player_one = Card("spade", "black", "A")
     player_two = Card("heart", "red", "10")
     player_three = Card("diamond", "red", "K")
+    player_test = Card("diamond", "red", "K")
 
     print_cards_in_row(card_one, card_two, card_three)
-    print_cards_in_row(player_one, player_two, player_three)
+    print_cards_in_row(player_one, player_two, player_three, player_test)
 
 
 
