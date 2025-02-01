@@ -1,6 +1,6 @@
 #STARTING_PHASE
 INPUT_NAME = "Before starting, please type in your name:"
-INPUT_MONEY = "And the money you want to lose....idufuahbdiwu we mean WIN D:"
+INPUT_MONEY = "And the money you want to transform into CREDIT:"
 WELCOME = ", welcome to CLI Black Jack!"
 ASK_RULES = "Do you know the rules of Black Jack?"
 NO_RULES = "Great, let's get things started..."

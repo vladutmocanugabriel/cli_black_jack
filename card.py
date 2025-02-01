@@ -2,11 +2,9 @@ from visuals import *
 from text import *
 
 class Card:
-    def __init__(self, suit, color, rank):
+    def __init__(self, suit, rank):
         self.suit = suit
-        self.color = color
         self.rank = rank
-
 
 
     def get_symbols_value(symbol):
@@ -38,15 +36,15 @@ class Card:
 
     def _get_suit_icon(self):
         if self.suit == "diamond":
-            return "♦" if self.color == "black" else "♢"
+            return "♦"
         elif self.suit == "heart":
-            return "♥" if self.color == "black" else "♡"
+            return "♥" 
         elif self.suit == "spade":
-            return "♠" if self.color == "black" else "♤"
+            return "♠" 
         elif self.suit == "club":
-            return "♣" if self.color == "black" else "♧"
+            return "♣" 
         else:
-            return self.suit[0]  # Default: first character of suit name
+            return self.suit  # Default: first character of suit name
 
     def _build_card_string(self, template, height):
         result = []

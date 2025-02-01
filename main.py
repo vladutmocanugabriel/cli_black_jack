@@ -22,7 +22,7 @@ def main():
 
 
     while True:
-        pass
+        game.play_round()
 
 
 
