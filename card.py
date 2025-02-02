@@ -7,7 +7,7 @@ class Card:
         self.rank = rank
 
 
-    def get_symbols_value(symbol):
+    def get_symbols_value(self, symbol):
         if symbol=="K":
             return 10
         elif symbol == "J":
@@ -15,11 +15,7 @@ class Card:
         elif symbol == "Q":
             return 10
         elif symbol == "A":
-            choice = input(f"\n{ACE_INFO} (1 or 11)")
-            if choice == "1":
-                return 1
-            elif choice == "11":
-                return 11
+            return 1
 
 
     def draw_card(self, height=0):

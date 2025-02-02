@@ -16,3 +16,5 @@ class Dealer:
         # Print each row by combining corresponding lines of all cards
         for lines in zip(*card_lines):
             print("  ".join(lines))  # Join lines with spacing
+
+        return "\nDealer's cards ⬆"

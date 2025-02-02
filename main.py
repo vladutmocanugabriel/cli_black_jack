@@ -20,9 +20,8 @@ def main():
         print(f"\n{RULES}")
         print(f"\n{AFTER_RULES}")
 
-
-    while True:
-        game.play_round()
+    
+    game.play_round()
 
 
 
