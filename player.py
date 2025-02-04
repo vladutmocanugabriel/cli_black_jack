@@ -5,16 +5,30 @@ class Player:
         self.current_cards = []
         self.current_bet = 0
         self.is_out = False
+        self.over_limit = False
         self.current_score = 0
 
     def calculate_score(self):
         for card in self.current_cards:
-            if card.rank in ["K", "J", "Q", "A"]:
-                symbol_value = card.get_symbols_value(card.rank)
+            if self.current_score < 21:
+                if card.rank in ["K", "J", "Q", "A"]:
+                    symbol_value = card.get_symbols_value(card.rank)
+                    self.current_score += symbol_value
+                else:
+                    self.current_score += int(card.rank)
+
+        print(f"So far you got {self.current_score} score.")
+
+
+    def add_to_score(self):
+        if self.is_out == False and self.current_score < 21:
+            if self.current_cards[len(self.current_cards)-1].rank in ["K", "J", "Q", "A"]:
+                symbol_value = self.current_cards[len(self.current_cards)-1].get_symbols_value(self.current_cards[len(self.current_cards)-1].rank)
                 self.current_score += symbol_value
             else:
-                self.current_score += int(card.rank)
-        print(f"Your current score on the table is: {self.current_score}")
+                 self.current_score += int(self.current_cards[len(self.current_cards)-1].rank)
+        else:
+            self.over_limit = True
 
     def bet(self):
         bet_amount = int(input(f"\nPlease place your bet:"))

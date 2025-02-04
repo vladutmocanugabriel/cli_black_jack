@@ -7,19 +7,28 @@ class Game:
     def __init__(self, player_name, player_bank):
         self.player = Player(player_name, player_bank)
         self.dealer = Dealer()
+        self.round_finished = False
 
     def __give_cards(self):
-        if self.player.is_out == False:
-        #Give the player it's card if it's not out:
+        if self.player.is_out == False and self.player.over_limit == False:
+        #Give the player it's card if it's not out and start counting score:
             self.dealer.deal_card(self.player)
+            self.player.add_to_score()
         print("-------------------------------------------------------------------------------------")
         print(self.player.print_player_cards_in_row(self.player.current_cards))
 
-        #Give the Dealer it's card
-        self.dealer.deal_card(self.dealer)
+        #Give the Dealer it's card and start counting score
+        if self.dealer.is_out == False:
+            self.dealer.deal_card(self.dealer)
+            self.dealer.add_to_score()
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print(self.dealer.print_dealer_cards_in_row(self.dealer.current_cards))
+
+        print("####")
+        print(f"Player: {self.player.current_score}")
+        print(f"Dealer: {self.dealer.current_score}")
+        print("####")
 
     def __display_menu(self):
         print("\nWhat would you like to do now?")
@@ -59,6 +68,19 @@ class Game:
         elif menu_choice == "6":
             self.player.calculate_score()
 
+    def end_round(self):
+        if (self.player.is_out == True and self.dealer.is_out == True) or self.player.over_limit == True:
+            self.round_finished = True
+
+            if self.player.current_score > self.dealer.current_score and self.player.over_limit == False:
+                print(f"The player won with a total of: {self.player.current_score}!")
+            elif self.player.current_score < self.dealer.current_score:
+                print(f"The house won with a total of: {self.dealer.current_score}!")
+            elif self.player.current_score == self.dealer.current_score and self.player.over_limit == False:
+                print(f"It's a tie. Player has {self.player.current_score} and dealer has {self.dealer.current_score}. The player will get the bet back.")
+        else:
+            return
+
 
 
     def play_round(self):
@@ -76,8 +98,9 @@ class Game:
         time.sleep(2)
 
         #Display the menu after each turn
-        while True:
-            self.__display_menu()
-
-    def end_round():
-        pass
+        if self.round_finished == False:
+            while True:
+                self.__display_menu()
+                self.end_round()
+        else:
+            print("The game ENDED! WEll done everyone!")
