@@ -1,3 +1,7 @@
+from card import Card
+import random
+from visuals import *
+
 class Player:
     def __init__(self, name, bank):
         self.name = name
@@ -6,28 +10,44 @@ class Player:
         self.current_bet = 0
         self.is_out = False
         self.over_limit = False
-        self.current_score = 0
+        self.win_condition = False
 
     def calculate_score(self):
+        current_score = 0
         for card in self.current_cards:
-            if self.current_score < 21:
-                if card.rank in ["K", "J", "Q", "A"]:
+            if current_score < 21:
+                if card.rank in ["K", "J", "Q"]:
                     symbol_value = card.get_symbols_value(card.rank)
-                    self.current_score += symbol_value
+                    current_score += symbol_value
+                elif card.rank == "A":
+                    print("You got an ACE, it can be 1 or 11.")
+                    choice = input("Type your choice (1 or 11):")
+                    current_score += int[choice]
                 else:
-                    self.current_score += int(card.rank)
+                    current_score += int(card.rank)
+            elif current_score > 21:
+                self.is_out == True
+                self.over_limit == True
+            elif current_score == 21:
+                self.win_condition = True
 
-        print(f"So far you got {self.current_score} score.")
-
-
-    def add_to_score(self):
-        if self.is_out == False and self.current_score < 21:
-            if self.current_cards[len(self.current_cards)-1].rank in ["K", "J", "Q", "A"]:
-                symbol_value = self.current_cards[len(self.current_cards)-1].get_symbols_value(self.current_cards[len(self.current_cards)-1].rank)
-                self.current_score += symbol_value
-            else:
-                 self.current_score += int(self.current_cards[len(self.current_cards)-1].rank)
+        return current_score
+    
+    def deal_card(self):
+        new_card = Card(random.choice(list(SUITS.keys())), random.choice(RANK))
+        if new_card.rank in ["K", "J", "Q"]:
+            future_score = new_card.get_symbols_value(new_card.rank) + self.calculate_score()
+        elif new_card.rank == "A":
+            print("You just received an ACE, it can be 1 or 11.")
+            choice = input("Type your choice (1 or 11):")
+            future_score = int(choice) + self.calculate_score()
         else:
+            future_score = int(new_card.rank) + self.calculate_score()
+
+        if self.is_out == False and future_score <= 21 :
+            self.current_cards.append(new_card)
+        else:
+            self.is_out = True
             self.over_limit = True
 
     def bet(self):

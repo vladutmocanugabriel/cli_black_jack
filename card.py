@@ -14,8 +14,6 @@ class Card:
             return 10
         elif symbol == "Q":
             return 10
-        elif symbol == "A":
-            return 1
 
 
     def draw_card(self, height=0):
