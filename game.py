@@ -11,12 +11,14 @@ class Game:
 
     def __give_cards(self):
         #Give the player it's card if it's not out:
-        self.player.deal_card()
+        if self.player.is_out == False:
+            self.player.deal_card()
         print("-------------------------------------------------------------------------------------")
         print(self.player.print_player_cards_in_row(self.player.current_cards))
 
         #Give the Dealer it's card and start counting score
-        self.dealer.deal_card()
+        if self.dealer.is_out == False and self.player.calculate_score() > self.dealer.calculate_score():
+            self.dealer.deal_card()
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         if (self.player.is_out == False and self.player.over_limit == False) and len(self.dealer.current_cards)>1:
@@ -55,6 +57,8 @@ class Game:
             self.player.check_bank()
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
         elif menu_choice == "3":
+            self.player.calculate_score()
+            self.dealer.calculate_score()
             self.__give_cards()
             self.player.calculate_score()
             self.dealer.calculate_score()
@@ -71,13 +75,10 @@ class Game:
             print(f"Your score at the moment is: {self.player.calculate_score()}")
 
     def end_roud_check(self):
-        if (self.player.is_out and self.player.over_limit) or self.player.win_condition:
+        player_out = self.player.is_out and self.player.over_limit
+        both_out = self.player.is_out and self.dealer.is_out
+        if player_out or self.player.win_condition or both_out or self.dealer.over_limit or self.dealer.win_condition:
             self.round_finished = True
-
-    def check_win_condition(self):
-        if self.player.win_condition == True:
-            self.round_finished = True
-
 
     def play_round(self):
          #Place bet
@@ -95,6 +96,7 @@ class Game:
 
         #Display the menu after each turn
         while True:
+                self.end_roud_check()
                 if self.round_finished == False and self.player.win_condition == False:
                     print(f"Round is finished is: {self.round_finished}")
                     print(f"Player is out is: {self.player.is_out}")
@@ -102,11 +104,32 @@ class Game:
                     print(f"Dealer is out: {self.dealer.is_out}")
                     print(f"Win condition is: {self.player.win_condition}")
                     self.__display_menu()
-                    self.check_win_condition
                     self.end_roud_check()
                 else:
                     break
         if self.player.win_condition:
             print(f"{self.player.name} got THE BLACK JACK with 21")
+        elif self.dealer.win_condition:
+            print(f"{self.player.name} the dealer just got THE BLACK JACK with 21")
+        elif self.dealer.over_limit:
+            print(f"{self.player.name} well done, the dealer exceeded the limit.")
+        elif (self.player.is_out and self.dealer.is_out) and self.player.over_limit == False:
+            player_score = self.player.calculate_score()
+            dealer_score = self.dealer.calculate_score()
+            if player_score > dealer_score:
+                print(f"Congrats {self.player.name}, you won the game!")
+                print(self.player.print_player_cards_in_row(self.player.current_cards))
+                print(self.dealer.print_dealer_cards_in_row(self.dealer.current_cards))
+
+            elif dealer_score > player_score:
+                print(f"I am sorry {self.player.name}, but you lost to the dealer.")
+                print(self.player.print_player_cards_in_row(self.player.current_cards))
+                print(self.dealer.print_dealer_cards_in_row(self.dealer.current_cards))
+            elif dealer_score == player_score:
+                print("It s a tie, you ll get your money back.")
+                print(self.player.print_player_cards_in_row(self.player.current_cards))
+                print(self.dealer.print_dealer_cards_in_row(self.dealer.current_cards))
         else:
-            print("The game ENDED! WEll done everyone!")
+            print(f"{self.player.name} you went over the 21 limit, so you lost with a total of {self.player.calculate_score()}")
+            print(self.player.print_player_cards_in_row(self.player.current_cards))
+            print(self.dealer.print_dealer_cards_in_row(self.dealer.current_cards))

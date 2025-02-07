@@ -15,38 +15,41 @@ class Player:
     def calculate_score(self):
         current_score = 0
         for card in self.current_cards:
-            if current_score < 21:
-                if card.rank in ["K", "J", "Q"]:
-                    symbol_value = card.get_symbols_value(card.rank)
-                    current_score += symbol_value
-                elif card.rank == "A":
-                    print("You got an ACE, it can be 1 or 11.")
-                    choice = input("Type your choice (1 or 11):")
-                    current_score += int[choice]
-                else:
-                    current_score += int(card.rank)
-            elif current_score > 21:
+            if current_score > 21:
                 self.is_out == True
                 self.over_limit == True
             elif current_score == 21:
                 self.win_condition = True
+            elif current_score < 21:
+                if card.rank in ["K", "J", "Q"]:
+                    symbol_value = card.get_symbols_value(card.rank)
+                    current_score += symbol_value
+                elif card.rank == "A":
+                    current_score += card.value
+                else:
+                    current_score += int(card.rank)
 
         return current_score
     
     def deal_card(self):
         new_card = Card(random.choice(list(SUITS.keys())), random.choice(RANK))
+        future_score = 0
         if new_card.rank in ["K", "J", "Q"]:
             future_score = new_card.get_symbols_value(new_card.rank) + self.calculate_score()
         elif new_card.rank == "A":
             print("You just received an ACE, it can be 1 or 11.")
+            ace_card = Card('diamond', 'A')
+            print(f"{ace_card.draw_card()}")
             choice = input("Type your choice (1 or 11):")
-            future_score = int(choice) + self.calculate_score()
+            new_card.value = int(choice)
+            future_score = new_card.value + self.calculate_score()
         else:
             future_score = int(new_card.rank) + self.calculate_score()
 
         if self.is_out == False and future_score <= 21 :
             self.current_cards.append(new_card)
         else:
+            self.current_cards.append(new_card)
             self.is_out = True
             self.over_limit = True
 
